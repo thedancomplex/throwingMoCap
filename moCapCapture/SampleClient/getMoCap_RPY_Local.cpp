@@ -35,8 +35,20 @@ Usage [optional]:
 #include <conio.h>
 #include <winsock2.h>
 
+/*
+#include <winsock2.h>   // must include before windows.h or ws2tcpip.h
+#include <windows.h>
+#include <Ws2tcpip.h>
+#include <tchar.h>
+#include <math.h>
+#include "NATUtils.h"
+#include <float.h>
+*/
+
+#include <math.h>
 #include "NatNetTypes.h"
 #include "NatNetClient.h"
+#include "natutils.h"
 
 #pragma warning( disable : 4996 )
 
@@ -47,6 +59,7 @@ void __cdecl DataHandler(sFrameOfMocapData* data, void* pUserData);			// receive
 void __cdecl MessageHandler(int msgType, char* msg);		// receives NatNet error mesages
 void resetClient();
 int CreateClient(int iConnectionType);
+void Matrix_FromQuat(HMatrix &M,double x, double y, double z, double w, int order);   //EulerAngles is the same type as quat
 
 unsigned int MyServersDataPort = 3130;
 unsigned int MyServersCommandPort = 3131;
@@ -427,7 +440,23 @@ void _WriteHeader(FILE* fp, sDataDescriptions* pBodyDefs)
 	fprintf(fp,"\n");
 
 }
-
+/*
+void Matrix_FromQuat(HMatrix &M,double x, double y, double z, double w, int order)   //EulerAngles is the same type as quat
+{
+    //HMatrix M;
+    double Nq = x*x+y*y+z*z+w*w;
+    double s = (Nq > 0.0) ? (2.0 / Nq) : 0.0;
+    double xs = x*s,	  ys = y*s,	 zs = z*s;
+    double wx = w*xs,	  wy = w*ys,	 wz = w*zs;
+    double xx = x*xs,	  xy = x*ys,	 xz = x*zs;
+    double yy = y*ys,	  yz = y*zs,	 zz = z*zs;
+    M[X][X] = 1.0 - (yy + zz); M[X][Y] = xy - wz; M[X][Z] = xz + wy;
+    M[Y][X] = xy + wz; M[Y][Y] = 1.0 - (xx + zz); M[Y][Z] = yz - wx;
+    M[Z][X] = xz - wy; M[Z][Y] = yz + wx; M[Z][Z] = 1.0 - (xx + yy);
+    M[W][X]=M[W][Y]=M[W][Z]=M[X][W]=M[Y][W]=M[Z][W]=0.0; M[W][W]=1.0;
+    //return (M);
+}
+*/
 void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 {
     float Luarm_r,  Luarm_p, Luarm_y, Luarm_l;
@@ -435,7 +464,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 	float Ruarm_r,  Ruarm_p, Ruarm_y, Ruarm_l;
 	float Relbow_r, Relbow_p, Relbow_y, Relbow_l;
 	float Lthigh_r, Lthigh_p, Lthigh_y, Lthigh_l;
-	float Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_y;
+	float Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_l;
 	float Lshin_r,  Lshin_p, Lshin_y, Lshin_l;
 	float Rshin_r,  Rshin_p, Rshin_y, Rshin_l;
 	float Lfoot_r,  Lfoot_p, Lfoot_y, Lfoot_l;
@@ -447,7 +476,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 	float Rhand_r,  Rhand_p, Rhand_y,Rhand_l;
     float Head_r,   Head_p,  Head_y,Head_l;
 	float Chest_r,  Chest_p, Chest_y,Chest_l;
-	float UChest_r, UChest_p,UChest_y,UChest_l;
+	float Uchest_r, Uchest_p,Uchest_y,Uchest_l;
 	float Lfoote_r, Lfoote_p,Lfoote_y,Lfoote_l;
 	float Rfoote_r, Rfoote_p,Rfoote_y,Rfoote_l;
 
@@ -463,7 +492,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 			{
 				sRigidBodyData rbData = skData.RigidBodyData[j];
 				
-							
+				/*
 				if(  rbData.ID == 65544 ) { char Name[] = "Lshoulder"; Luarm_x = rbData.x; 	Luarm_y = rbData.y; Luarm_z = rbData.z;} //Luarm_yaw_2 = -yaw3, Luarm_pitch_2 = -pitch3, Luarm_roll_2 = -roll3;         Luarm_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Luarm_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Luarm_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Luarm_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Luarm_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Luarm_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Luarm_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Luarm_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Luarm_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
 				if(  rbData.ID == 65545 ) { char Name[] = "LElbow";    Lelbow_x = rbData.x, Lelbow_y = rbData.y, Lelbow_z = rbData.z;}// fprintf(fp," %3.2f \n",Lelbow_yaw_1);} //Lelbow_yaw_2 = -yaw3, Lelbow_pitch_2 = -pitch3, Lelbow_roll_2 = -roll3;         Lelbow_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Lelbow_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Lelbow_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Lelbow_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Lelbow_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Lelbow_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Lelbow_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Lelbow_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Lelbow_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}	
 				if(  rbData.ID == 65549 ) { char Name[] = "Rshoulder"; Ruarm_x = rbData.x, Ruarm_y = rbData.y, Ruarm_z = rbData.z;} //, Ruarm_yaw_2 = -yaw3, Ruarm_pitch_2 = -pitch3, Ruarm_roll_2 = -roll3;         Ruarm_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Ruarm_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Ruarm_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Ruarm_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Ruarm_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Ruarm_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Ruarm_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Ruarm_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Ruarm_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
@@ -476,8 +505,23 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 				
 				if(  rbData.ID == 65555 ) { char Name[] = "LFoot";     Lfoot_x = rbData.x, Lfoot_y = rbData.y, Lfoot_z = rbData.z;}//, Lfoot_yaw_2 = -yaw3, Lfoot_pitch_2 = -pitch3, Lfoot_roll_2 = -roll3;         Lfoot_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Lfoot_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Lfoot_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Lfoot_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Lfoot_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Lfoot_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Lfoot_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Lfoot_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Lfoot_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
 				if(  rbData.ID == 65559 ) { char Name[] = "RFoot";     Rfoot_x = rbData.x, Rfoot_y = rbData.y, Rfoot_z = rbData.z;}//, Rfoot_yaw_2 = -yaw3, Rfoot_pitch_2 = -pitch3, Rfoot_roll_2 = -roll3;         Rfoot_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Rfoot_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Rfoot_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Rfoot_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Rfoot_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Rfoot_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Rfoot_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Rfoot_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Rfoot_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
-				
-				if(  rbData.ID == 65537 ) { char Name[] = "UHip";       UHip_x = rbData.x, UHip_y = rbData.y, UHip_z = rbData.z;} //, Hip_yaw_2 = -yaw3, Hip_pitch_2 = -pitch3, Hip_roll_2 = -roll3;                     Hip_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Hip_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Hip_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Hip_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Hip_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Hip_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Hip_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Hip_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Hip_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
+				*/
+				if(  rbData.ID == 65537 ) // Upper Hip (UHip)
+				{
+					Quat q;
+					q.x = rbData.qx;
+					q.y = rbData.qy;
+					q.z = rbData.qz;
+					q.w = rbData.qw;
+					EulerAngles deg = Eul_FromQuat(q, EulOrdXYZs);
+					UHip_r = deg.x;
+					UHip_p = deg.y;
+					UHip_y = deg.z;
+					UHip_l = sqrt(rbData.x*rbData.x + rbData.y*rbData.y + rbData.z*rbData.z);
+					
+				}
+
+				/*
 
 				if(  rbData.ID == 65543 ) { char Name[] = "ULshoulder"; Lshoulder_x = rbData.x, Lshoulder_y = rbData.y, Lshoulder_z = rbData.z;}  //Lshoulder_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Lshoulder_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Lshoulder_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Lshoulder_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Lshoulder_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Lshoulder_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Lshoulder_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Lshoulder_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Lshoulder_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
 				if(  rbData.ID == 65548 ) { char Name[] = "ULshoulder"; Rshoulder_x = rbData.x, Rshoulder_y = rbData.y, Rshoulder_z = rbData.z;} //Rshoulder_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Rshoulder_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Rshoulder_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Rshoulder_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Rshoulder_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Rshoulder_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Rshoulder_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Rshoulder_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Rshoulder_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
@@ -491,97 +535,37 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 
 				if(  rbData.ID == 131052) { char Name[] = "LFootend";   Lfoote_x = rbData.x, Lfoote_y = rbData.y, Lfoote_z =rbData.z;}
 				if(  rbData.ID == 131048) { char Name[] = "RFootend";   Rfoote_x = rbData.x, Rfoote_y = rbData.y, Rfoote_z =rbData.z;}
-		
+				*/
 
 			}				/*fprintf(fp, "%3.2f\t  %3.2f\t %3.2f\t %3.2f\t  %3.2f\t  %3.2f\t  %3.2f\t %3.2f\t %3.2f\t %3.2f\t  %3.2f\t  %3.2f\t   %3.2f\t %3.2f\t %3.2f\t %3.2f\t  %3.2f\t %3.2f   %d        \n",
 						     Luarm_x, Luarm_y,Luarm_z,Lelbow_x,Lelbow_y,Lelbow_z,Ruarm_x,Ruarm_y,Ruarm_z,Relbow_x,Relbow_y,Relbow_z, Hip_x,  Hip_y,  Hip_z,  Trunk_x, Trunk_y,Trunk_z,data->iFrame);
 				*/
-			fprintf(fp,"\t%3.2f\t",Luarm_x);
-			fprintf(fp,"%3.2f\t",Luarm_y);
-			fprintf(fp,"%3.2f\t",Luarm_z);
-
-			fprintf(fp,"%3.2f\t",Lelbow_x);
-			fprintf(fp,"%3.2f\t",Lelbow_y);
-			fprintf(fp,"%3.2f\t",Lelbow_z);
 			
-			fprintf(fp,"%3.2f\t",Ruarm_x);
-			fprintf(fp,"%3.2f\t",Ruarm_y);
-			fprintf(fp,"%3.2f\t",Ruarm_z);
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Luarm_r, Luarm_p, Luarm_y, Luarm_l );                 
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lelbow_r, Lelbow_p, Lelbow_y, Lelbow_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Ruarm_r, Ruarm_p, Ruarm_y, Ruarm_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Relbow_r, Relbow_p, Relbow_y, Relbow_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lthigh_r, Lthigh_p, Lthigh_y, Lthigh_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lshin_r, Lshin_p, Lshin_y, Lshin_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rshin_r, Rshin_p, Rshin_y, Rshin_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lfoot_r, Lfoot_p, Lfoot_y, Lfoot_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rfoot_r, Rfoot_p, Rfoot_y, Rfoot_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",UHip_r, UHip_p, UHip_y, UHip_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lshoulder_r,  Lshoulder_p, Lshoulder_y, Lshoulder_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rshoulder_r, Rshoulder_p,  Rshoulder_y, Rshoulder_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lhand_r,  Lhand_p,  Lhand_y, Lhand_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rhand_r,  Rhand_p,  Rhand_y, Rhand_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Head_r,  Head_p,  Head_y, Head_l ); 
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Chest_r, Chest_p, Chest_y, Chest_l ); 
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Uchest_r, Uchest_p, Uchest_y, Uchest_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lfoote_r, Lfoote_p, Lfoote_y, Lfoote_l );
+				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rfoote_r, Rfoote_p, Rfoote_y, Rfoote_l );
 			
-			fprintf(fp,"%3.2f\t",Relbow_x);
-			fprintf(fp,"%3.2f\t",Relbow_y);
-			fprintf(fp,"%3.2f\t",Relbow_z);//4 sets. left and right, Upper arm and elbow
+				fprintf(fp, "%d",    data->iFrame);
+				fprintf(fp, "\n");
+				fflush(fp);
 
-			fprintf(fp,"%3.2f\t",Lthigh_x);
-			fprintf(fp,"%3.2f\t",Lthigh_y);
-			fprintf(fp,"%3.2f\t",Lthigh_z);
-
-			fprintf(fp,"%3.2f\t",Rthigh_x);
-			fprintf(fp,"%3.2f\t",Rthigh_y);
-			fprintf(fp,"%3.2f\t",Rthigh_z);
-
-			
-			fprintf(fp,"%3.2f\t",Lshin_x);
-			fprintf(fp,"%3.2f\t",Lshin_y);
-			fprintf(fp,"%3.2f\t",Lshin_z);
-
-			fprintf(fp,"%3.2f\t",Rshin_x);
-			fprintf(fp,"%3.2f\t",Rshin_y);
-			fprintf(fp,"%3.2f\t",Rshin_z); //4 sets, left and right, Thigh and Shin
-						
-			fprintf(fp,"%3.2f\t",Lfoot_x);
-			fprintf(fp,"%3.2f\t",Lfoot_y);
-			fprintf(fp,"%3.2f\t",Lfoot_z);
-
-			fprintf(fp,"%3.2f\t",Rfoot_x);
-			fprintf(fp,"%3.2f\t",Rfoot_y);
-			fprintf(fp,"%3.2f\t",Rfoot_z);
-						
-			fprintf(fp,"%3.2f\t",UHip_x);
-			fprintf(fp,"%3.2f\t",UHip_y);
-			fprintf(fp,"%3.2f\t",UHip_z);
-
-
-			fprintf(fp,"%3.2f\t",Lshoulder_x);
-			fprintf(fp,"%3.2f\t",Lshoulder_y);
-			fprintf(fp,"%3.2f\t",Lshoulder_z);
-
-			fprintf(fp,"%3.2f\t",Rshoulder_x);
-			fprintf(fp,"%3.2f\t",Rshoulder_y);
-			fprintf(fp,"%3.2f\t",Rshoulder_z);
-
-			fprintf(fp,"%3.2f\t",Lhand_x);
-			fprintf(fp,"%3.2f\t",Lhand_y);
-			fprintf(fp,"%3.2f\t",Lhand_z);
-
-			fprintf(fp,"%3.2f\t",Rhand_x);
-			fprintf(fp,"%3.2f\t",Rhand_y);
-			fprintf(fp,"%3.2f\t",Rhand_z);//4 sets
-
-			fprintf(fp,"%3.2f\t",Head_x);
-			fprintf(fp,"%3.2f\t",Head_y);
-			fprintf(fp,"%3.2f\t",Head_z);
-
-			fprintf(fp,"%3.2f\t",Chest_x);
-			fprintf(fp,"%3.2f\t",Chest_y);
-			fprintf(fp,"%3.2f\t",Chest_z);
-
-
-			fprintf(fp,"%3.2f\t",UChest_x);
-			fprintf(fp,"%3.2f\t",UChest_y);
-			fprintf(fp,"%3.2f\t",UChest_z);
-
-			fprintf(fp,"%3.2f\t",Lfoote_x);
-			fprintf(fp,"%3.2f\t",Lfoote_y);
-			fprintf(fp,"%3.2f\t",Lfoote_z);
-
-			fprintf(fp,"%3.2f\t",Rfoote_x);
-			fprintf(fp,"%3.2f\t",Rfoote_y);
-			fprintf(fp,"%3.2f\t",Rfoote_z);
-			
-			fprintf(fp, "%d",    data->iFrame);
-			fprintf(fp, "\n");
-			fflush(fp);
 		}
 	}
 }
