@@ -67,5 +67,8 @@ tmp =   [UH(1),     UH(2),      UH(3);
 
 plot3(pr(:,1), pr(:,2), pr(:,3),'o')
 axis([-2000 2000 -100 2000 -2000 2000])
+xlabel('X axis (mm)');
+ylabel('Y axis (mm)');
+zlabel('Z axis (mm)');
 grid on
 shg
