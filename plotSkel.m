@@ -1,9 +1,11 @@
 close all
 clear all
 
+%% Global Data
 [h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal.pts');
-%[h,d]=hdrload('moCapCapture/SampleClient/rpyLocal.pts');
 s = size(d);
+
+%% find and print on global frame
 dd = d(s(1),:);
 SL = dd(1:3);
 EL = dd(4:6);
@@ -73,3 +75,19 @@ ylabel('Y axis (mm)');
 zlabel('Z axis (mm)');
 grid on
 shg
+
+%% Local Data
+[H,D]=hdrload('moCapCapture/SampleClient/rpyLocal.pts');
+S = size(D);
+
+%% Find and print Local Frame with ref to the first point of UH (Upper Hip)
+DD = D(S(1),:);
+
+UH_L    =   DD(41:44);
+
+UH_a    = UH_L(1:3)*180/pi;
+
+disp(num2str(UH_a));
+
+
+

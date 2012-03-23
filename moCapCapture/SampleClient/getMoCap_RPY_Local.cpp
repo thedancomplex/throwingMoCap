@@ -459,26 +459,26 @@ void Matrix_FromQuat(HMatrix &M,double x, double y, double z, double w, int orde
 */
 void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 {
-    float Luarm_r,  Luarm_p, Luarm_y, Luarm_l;
-	float Lelbow_r, Lelbow_p, Lelbow_y, Lelbow_l;
-	float Ruarm_r,  Ruarm_p, Ruarm_y, Ruarm_l;
-	float Relbow_r, Relbow_p, Relbow_y, Relbow_l;
-	float Lthigh_r, Lthigh_p, Lthigh_y, Lthigh_l;
-	float Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_l;
-	float Lshin_r,  Lshin_p, Lshin_y, Lshin_l;
-	float Rshin_r,  Rshin_p, Rshin_y, Rshin_l;
-	float Lfoot_r,  Lfoot_p, Lfoot_y, Lfoot_l;
-	float Rfoot_r,  Rfoot_p, Rfoot_y, Rfoot_l;
-	float UHip_r,   UHip_p,  UHip_y, UHip_l;
-	float Lshoulder_r, Lshoulder_p, Lshoulder_y,Lshoulder_l;
-	float Rshoulder_r, Rshoulder_p, Rshoulder_y,Rshoulder_l;
-	float Lhand_r,  Lhand_p, Lhand_y,Lhand_l;
-	float Rhand_r,  Rhand_p, Rhand_y,Rhand_l;
-    float Head_r,   Head_p,  Head_y,Head_l;
-	float Chest_r,  Chest_p, Chest_y,Chest_l;
-	float Uchest_r, Uchest_p,Uchest_y,Uchest_l;
-	float Lfoote_r, Lfoote_p,Lfoote_y,Lfoote_l;
-	float Rfoote_r, Rfoote_p,Rfoote_y,Rfoote_l;
+    float Luarm_r = 0.0,  Luarm_p = 0.0, Luarm_y = 0.0, Luarm_l = 0.0;
+	float Lelbow_r = 0.0, Lelbow_p = 0.0, Lelbow_y = 0.0, Lelbow_l = 0.0;
+	float Ruarm_r = 0.0,  Ruarm_p = 0.0, Ruarm_y = 0.0, Ruarm_l = 0.0;
+	float Relbow_r = 0.0, Relbow_p = 0.0, Relbow_y = 0.0, Relbow_l = 0.0;
+	float Lthigh_r = 0.0, Lthigh_p = 0.0, Lthigh_y = 0.0, Lthigh_l = 0.0;
+	float Rthigh_r = 0.0, Rthigh_p = 0.0, Rthigh_y = 0.0, Rthigh_l = 0.0;
+	float Lshin_r = 0.0,  Lshin_p = 0.0, Lshin_y = 0.0, Lshin_l = 0.0;
+	float Rshin_r = 0.0,  Rshin_p = 0.0, Rshin_y = 0.0, Rshin_l = 0.0;
+	float Lfoot_r = 0.0,  Lfoot_p = 0.0, Lfoot_y = 0.0, Lfoot_l = 0.0;
+	float Rfoot_r = 0.0,  Rfoot_p = 0.0, Rfoot_y = 0.0, Rfoot_l = 0.0;
+	float UHip_r = 0.0,   UHip_p = 0.0,  UHip_y = 0.0, UHip_l = 0.0;
+	float Lshoulder_r = 0.0, Lshoulder_p = 0.0, Lshoulder_y = 0.0,Lshoulder_l = 0.0;
+	float Rshoulder_r = 0.0, Rshoulder_p = 0.0, Rshoulder_y = 0.0,Rshoulder_l = 0.0;
+	float Lhand_r = 0.0,  Lhand_p = 0.0, Lhand_y = 0.0,Lhand_l = 0.0;
+	float Rhand_r = 0.0,  Rhand_p = 0.0, Rhand_y = 0.0,Rhand_l = 0.0;
+    float Head_r = 0.0,   Head_p = 0.0,  Head_y = 0.0,Head_l = 0.0;
+	float Chest_r = 0.0,  Chest_p = 0.0, Chest_y = 0.0,Chest_l = 0.0;
+	float Uchest_r = 0.0, Uchest_p = 0.0,Uchest_y = 0.0,Uchest_l = 0.0;
+	float Lfoote_r = 0.0, Lfoote_p = 0.0,Lfoote_y = 0.0,Lfoote_l = 0.0;
+	float Rfoote_r = 0.0, Rfoote_p = 0.0,Rfoote_y = 0.0,Rfoote_l = 0.0;
 
 	int i=0; 
 	for(i=0; i < data->nSkeletons; i++)
@@ -513,7 +513,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdXYZs);
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);
 					UHip_r = deg.x;
 					UHip_p = deg.y;
 					UHip_y = deg.z;
@@ -541,26 +541,26 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 						     Luarm_x, Luarm_y,Luarm_z,Lelbow_x,Lelbow_y,Lelbow_z,Ruarm_x,Ruarm_y,Ruarm_z,Relbow_x,Relbow_y,Relbow_z, Hip_x,  Hip_y,  Hip_z,  Trunk_x, Trunk_y,Trunk_z,data->iFrame);
 				*/
 			
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Luarm_r, Luarm_p, Luarm_y, Luarm_l );                 
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lelbow_r, Lelbow_p, Lelbow_y, Lelbow_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Ruarm_r, Ruarm_p, Ruarm_y, Ruarm_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Relbow_r, Relbow_p, Relbow_y, Relbow_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lthigh_r, Lthigh_p, Lthigh_y, Lthigh_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lshin_r, Lshin_p, Lshin_y, Lshin_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rshin_r, Rshin_p, Rshin_y, Rshin_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lfoot_r, Lfoot_p, Lfoot_y, Lfoot_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rfoot_r, Rfoot_p, Rfoot_y, Rfoot_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",UHip_r, UHip_p, UHip_y, UHip_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lshoulder_r,  Lshoulder_p, Lshoulder_y, Lshoulder_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rshoulder_r, Rshoulder_p,  Rshoulder_y, Rshoulder_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lhand_r,  Lhand_p,  Lhand_y, Lhand_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rhand_r,  Rhand_p,  Rhand_y, Rhand_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Head_r,  Head_p,  Head_y, Head_l ); 
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Chest_r, Chest_p, Chest_y, Chest_l ); 
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Uchest_r, Uchest_p, Uchest_y, Uchest_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Lfoote_r, Lfoote_p, Lfoote_y, Lfoote_l );
-				fprintf(fp,"%9.6\f %9.6\f %9.6\f %9.6\f  ",Rfoote_r, Rfoote_p, Rfoote_y, Rfoote_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Luarm_r, Luarm_p, Luarm_y, Luarm_l );                 
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lelbow_r, Lelbow_p, Lelbow_y, Lelbow_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Ruarm_r, Ruarm_p, Ruarm_y, Ruarm_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Relbow_r, Relbow_p, Relbow_y, Relbow_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lthigh_r, Lthigh_p, Lthigh_y, Lthigh_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lshin_r, Lshin_p, Lshin_y, Lshin_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Rshin_r, Rshin_p, Rshin_y, Rshin_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lfoot_r, Lfoot_p, Lfoot_y, Lfoot_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Rfoot_r, Rfoot_p, Rfoot_y, Rfoot_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",UHip_r, UHip_p, UHip_y, UHip_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lshoulder_r,  Lshoulder_p, Lshoulder_y, Lshoulder_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Rshoulder_r, Rshoulder_p,  Rshoulder_y, Rshoulder_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lhand_r,  Lhand_p,  Lhand_y, Lhand_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Rhand_r,  Rhand_p,  Rhand_y, Rhand_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Head_r,  Head_p,  Head_y, Head_l ); 
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Chest_r, Chest_p, Chest_y, Chest_l ); 
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Uchest_r, Uchest_p, Uchest_y, Uchest_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Lfoote_r, Lfoote_p, Lfoote_y, Lfoote_l );
+				fprintf(fp,"%4.5f\t %4.5f\t %4.5f\t %4.5f\t  ",Rfoote_r, Rfoote_p, Rfoote_y, Rfoote_l );
 			
 				fprintf(fp, "%d",    data->iFrame);
 				fprintf(fp, "\n");
