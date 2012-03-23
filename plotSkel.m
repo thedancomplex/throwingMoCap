@@ -70,5 +70,6 @@ axis([-2000 2000 -100 2000 -2000 2000])
 xlabel('X axis (mm)');
 ylabel('Y axis (mm)');
 zlabel('Z axis (mm)');
+disp('jane test dan');
 grid on
 shg
