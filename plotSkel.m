@@ -30,8 +30,9 @@ C = dd(49:51);
 UC = dd(52:54);
 FLe = dd(55:57);
 FRe = dd(58:60);
+Nk  = dd(61:63);
 
-pr = [SL; EL; SR; ER; HiL; HiR; KL; KR; FL; FR; UH; USL; USR; HL; HR; H; C; UC; FLe; FRe];
+pr = [SL; EL; SR; ER; HiL; HiR; KL; KR; FL; FR; UH; USL; USR; HL; HR; H; C; UC; FLe; FRe ; Nk];
 
 
 figure
@@ -65,10 +66,13 @@ tmp =   [UH(1),     UH(2),      UH(3);
         C(1),       C(2),       C(3);
         UC(1),      UC(2),      UC(3);
         USL(1),     USL(2),     USL(3);
+        Nk(1),      Nk(2),      Nk(3);
         H(1),       H(2),       H(3)];
         plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'm'); 
 
 plot3(pr(:,1), pr(:,2), pr(:,3),'o')
+hold on
+plot3(Nk(1), Nk(2), Nk(3),'r+');
 axis([-2000 2000 -100 2000 -2000 2000])
 xlabel('X axis (mm)');
 ylabel('Y axis (mm)');
@@ -107,7 +111,7 @@ y1 = UH(2);
 z1 = UH(3);
 t1 = [ x1; y1; z1];
 
-% next point is the chest
+%% Upper hip to chest, note Upper hip is known from the world corordinates.
 x2 = Ch_L(4);
 y2 = Ch_L(5);
 z2 = Ch_L(6);
@@ -123,8 +127,11 @@ T0 = [  0 0 0 0 ;
         0 0 0 0 ;
         0 0 0 0 ;
         0 0 0 1];
-    
+
+Tf_Orig_to_Upper_Hip = T1*T0;    
+
 Tf = T2*T1*T0;
+Tf_Upper_Hip_to_Chest = Tf;
 
 
 Lf = [  Tf(1,4),    Tf(2,4),    Tf(3,4);
@@ -132,7 +139,7 @@ Lf = [  Tf(1,4),    Tf(2,4),    Tf(3,4);
     
 plot3(Lf(:,1), Lf(:,2), Lf(:,3),'LineWidth',6);
 
-% Chest to Upper Chest
+%% Chest to Upper Chest
 UC_L = DD(120:126);
 x3  =   UC_L(4);
 y3  =   UC_L(5);
@@ -148,16 +155,32 @@ t3  = [ x3 ; y3 ; z3 ];
 T3  = [r3, t3; 0 0 0 1];
 
 Tf = T3*Tf;
-
+Tf_Chest_to_UpperChest = Tf;
 Lf = [[Tf(1,4),    Tf(2,4),    Tf(3,4)];Lf];
+
 plot3(Lf(:,1), Lf(:,2), Lf(:,3),'g','LineWidth',3);
 
+%% Upper Chest to Neck
+Nk_L = DD(78:84);
+x4  =   Nk_L(4);
+y4  =   Nk_L(5);
+z4  =   Nk_L(6);
+
+R4  =   deg2rad(Nk_L(1));
+P4  =   deg2rad(Nk_L(2));
+Y4  =   deg2rad(Nk_L(3));
+
+r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
+t4  = [ x4 ; y4 ; z4 ];
+
+T4  = [r4, t4; 0 0 0 1];
+
+Tf_Nk = T4*Tf_UpperChest;
+
+Lf_Nk = [[Tf_Nk(1,4),    Tf_Nk(2,4),    Tf_Nk(3,4)];Lf];
+plot3(Lf_Nk(:,1), Lf_Nk(:,2), Lf_Nk(:,3),'r','LineWidth',3);
 
 
-
-UH_a    = UH_L(1:3)*180/pi;
-
-%disp(num2str(UH_a));
 
 
 
