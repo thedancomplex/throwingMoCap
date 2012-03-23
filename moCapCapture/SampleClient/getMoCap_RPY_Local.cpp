@@ -173,7 +173,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if(argc > 3)
 		sprintf(szFile, "%s\\%s", szFolder, argv[3]);
 	else
-		sprintf(szFile, "%s\\Client-output.pts",szFolder);
+		sprintf(szFile, "%s\\rpyLocal.pts",szFolder);
 	fp = fopen(szFile, "w");
 	if(!fp)
 	{

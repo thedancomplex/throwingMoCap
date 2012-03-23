@@ -1,7 +1,8 @@
 close all
 clear all
 
-[h,d]=hdrload('Client-output.pts');
+%[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal.pts');
+[h,d]=hdrload('moCapCapture/SampleClient/rpyLocal.pts');
 s = size(d);
 dd = d(s(1),:);
 SL = dd(1:3);

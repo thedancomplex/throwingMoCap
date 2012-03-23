@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+<?xml version="1.0" encoding="ks_c_5601-1987"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="getMoCap_XYZ"
-	ProjectGUID="{FA84C39B-9F95-4151-A7A9-16BB5B0DE170}"
+	Name="getMoCap_RPY"
+	ProjectGUID="{4ECC4EF9-781F-4BB7-920D-9114584D87CA}"
 	RootNamespace="SampleClient"
 	Keyword="ManagedCProj"
 	TargetFrameworkVersion="131072"
@@ -356,7 +356,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\getMoCap_XYZ_World.cpp"
+				RelativePath=".\getMoCap_RPY_Local.cpp"
 				>
 			</File>
 		</Filter>
