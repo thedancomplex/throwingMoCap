@@ -113,7 +113,9 @@ y2 = Ch_L(5);
 z2 = Ch_L(6);
 
 t2 = [ x2; y2; z2];
-r2 = [ 0,0,0;0,0,0;0,0,0 ];
+
+%r2 = [ 0,0,0;0,0,0;0,0,0 ];
+%r0 = [ 0 0 0 ; 0 0 0; 0 0 0];
 T1 = [ r1, t1; 0 0 0 1];
 T2 = [ r2, t2; 0 0 0 1];
 
@@ -130,12 +132,32 @@ Lf = [  Tf(1,4),    Tf(2,4),    Tf(3,4);
     
 plot3(Lf(:,1), Lf(:,2), Lf(:,3),'LineWidth',6);
 
+% Chest to Upper Chest
+UC_L = DD(120:126);
+x3  =   UC_L(4);
+y3  =   UC_L(5);
+z3  =   UC_L(6);
+
+R3  =   deg2rad(UC_L(1));
+P3  =   deg2rad(UC_L(2));
+Y3  =   deg2rad(UC_L(3));
+
+r3  = [ R3 0 0 ; 0 P3 0 ; 0 0 Y3 ];
+t3  = [ x3 ; y3 ; z3 ];
+
+T3  = [r3, t3; 0 0 0 1];
+
+Tf = T3*Tf;
+
+Lf = [[Tf(1,4),    Tf(2,4),    Tf(3,4)];Lf];
+plot3(Lf(:,1), Lf(:,2), Lf(:,3),'g','LineWidth',3);
+
 
 
 
 UH_a    = UH_L(1:3)*180/pi;
 
-disp(num2str(UH_a));
+%disp(num2str(UH_a));
 
 
 
