@@ -83,7 +83,55 @@ S = size(D);
 %% Find and print Local Frame with ref to the first point of UH (Upper Hip)
 DD = D(S(1),:);
 
-UH_L    =   DD(41:44);
+UH_L    =   DD(71:77);      % upper hip
+Ch_L    =   DD(113:119);      % Chest
+
+%% Plot Upper hip to Chest
+L1      =   UH_L(7);
+R1      =   deg2rad(UH_L(1));
+P1      =   deg2rad(UH_L(2));
+Y1      =   deg2rad(UH_L(3));
+
+L2      =   Ch_L(7);
+R2      =   deg2rad(Ch_L(1));
+P2      =   deg2rad(Ch_L(2));
+Y2      =   deg2rad(Ch_L(3));
+
+r1 = [ R1 0 0 ; 0 P1 0 ; 0 0 Y1];
+
+r2 = [ R2 0 0 ; 0 P2 0 ; 0 0 Y2];
+
+% Start at a known world point of the Upper Hip
+x1 = UH(1);
+y1 = UH(2);
+z1 = UH(3);
+t1 = [ x1; y1; z1];
+
+% next point is the chest
+x2 = Ch_L(4);
+y2 = Ch_L(5);
+z2 = Ch_L(6);
+
+t2 = [ x2; y2; z2];
+r2 = [ 0,0,0;0,0,0;0,0,0 ];
+T1 = [ r1, t1; 0 0 0 1];
+T2 = [ r2, t2; 0 0 0 1];
+
+T0 = [  0 0 0 0 ;
+        0 0 0 0 ;
+        0 0 0 0 ;
+        0 0 0 1];
+    
+Tf = T2*T1*T0;
+
+
+Lf = [  Tf(1,4),    Tf(2,4),    Tf(3,4);
+        x1,         y1,         z1];
+    
+plot3(Lf(:,1), Lf(:,2), Lf(:,3),'LineWidth',6);
+
+
+
 
 UH_a    = UH_L(1:3)*180/pi;
 
