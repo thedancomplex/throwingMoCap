@@ -403,34 +403,53 @@ void __cdecl MessageHandler(int msgType, char* msg)
 /* File writing routines */
 void _WriteHeader(FILE* fp, sDataDescriptions* pBodyDefs)
 {
-    fprintf(fp,"Luarm_x   Luarm_y   Luarm_z   Lelbow_x   Lelbow_y   Lelbow_z   Ruarm_x   Ruarm_y   Ruarm_z   Relbow_x   Relbow_y   Relbow_z   LThigh_x   LThigh_y  LThigh_z   RThigh_x   RThigh_y  RThigh_z LShin_x LShin_y LShin_z RShin_x RShin_y RShin_z  Lfoot_x Lfoot_y Lfoot_z Rfoot_x Rfoot_y Rfoot_z Chest_x   Chest_y  Chest_z");
-	fprintf(fp,"Hip_x     Hip_y     Hip_z     LShoulder_x  LShoulder_y LShoulder_z RShoulder_x  RShoulder_y RShoulder_z  Lhand_x  Lhand_y  Lhand_z  Rhand_x  Rhand_y  Rhand_z  Head_x  Head_y  Head_z  Chest_x Chest_y Chest_z  UChest_x UChest_y UChest_z Frame");
+	fprintf(fp,"LuarmR LuarmP LuarmY LuarmL ");                 
+	fprintf(fp,"LelbowR LelbowP LelbowY LelbowL ");
+	fprintf(fp,"RuarmR RuarmP RuarmY RuarmL ");
+	fprintf(fp,"RelbowR RelbowP RelbowY RelbowL ");
+	fprintf(fp,"LThighR LThighP LThighY LThighL ");
+	fprintf(fp,"RThighR RThighP RThighY RThighL ");
+	fprintf(fp,"LShinR LShinP LShinY LShinL ");
+	fprintf(fp,"RShinR RShinP RShinY RShinL ");
+	fprintf(fp,"LfootR LfootP LfootY LfootL ");
+	fprintf(fp,"RfootR RfootP RfootY RfootL ");
+	fprintf(fp,"HipR HipP HipY HipL ");
+	fprintf(fp,"LShoulderR  LShoulderP LShoulderY LShoulderL ");
+	fprintf(fp,"RShoulderR  RShoulderP RShoulderY RShoulderL ");
+	fprintf(fp,"LhandR  LhandP  LhandY LhandL ");
+	fprintf(fp,"RhandR  RhandP  RhandY RhandL ");
+	fprintf(fp,"HeadR  HeadP  HeadY HeadL "); 
+	fprintf(fp,"ChestR ChestP ChestY ChestL "); 
+	fprintf(fp,"UChestR UChestP UChestY UChestL ");
+	fprintf(fp,"LfooteR LfooteP LfooteY LfooteL ");
+	fprintf(fp,"RfooteR RfooteP RfooteY RfooteL ");
+	fprintf(fp,"Frame ");
 	fprintf(fp,"\n");
 
 }
 
 void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 {
-    float Luarm_x,  Luarm_y, Luarm_z;
-	float Lelbow_x, Lelbow_y, Lelbow_z;
-	float Ruarm_x,  Ruarm_y, Ruarm_z;
-	float Relbow_x, Relbow_y, Relbow_z;
-	float Lthigh_x, Lthigh_y, Lthigh_z;
-	float Rthigh_x, Rthigh_y, Rthigh_z;
-	float Lshin_x,  Lshin_y, Lshin_z;
-	float Rshin_x,  Rshin_y, Rshin_z;
-	float Lfoot_x,  Lfoot_y, Lfoot_z;
-	float Rfoot_x,  Rfoot_y, Rfoot_z;
-	float UHip_x,   UHip_y,  UHip_z;
-	float Lshoulder_x, Lshoulder_y, Lshoulder_z;
-	float Rshoulder_x, Rshoulder_y, Rshoulder_z;
-	float Lhand_x,  Lhand_y, Lhand_z;
-	float Rhand_x,  Rhand_y, Rhand_z;
-    float Head_x,   Head_y,  Head_z;
-	float Chest_x,  Chest_y, Chest_z;
-	float UChest_x, UChest_y,UChest_z;
-	float Lfoote_x, Lfoote_y,Lfoote_z;
-	float Rfoote_x, Rfoote_y,Rfoote_z;
+    float Luarm_r,  Luarm_p, Luarm_y, Luarm_l;
+	float Lelbow_r, Lelbow_p, Lelbow_y, Lelbow_l;
+	float Ruarm_r,  Ruarm_p, Ruarm_y, Ruarm_l;
+	float Relbow_r, Relbow_p, Relbow_y, Relbow_l;
+	float Lthigh_r, Lthigh_p, Lthigh_y, Lthigh_l;
+	float Rthigh_r, Rthigh_p, Rthigh_y, Rthigh_y;
+	float Lshin_r,  Lshin_p, Lshin_y, Lshin_l;
+	float Rshin_r,  Rshin_p, Rshin_y, Rshin_l;
+	float Lfoot_r,  Lfoot_p, Lfoot_y, Lfoot_l;
+	float Rfoot_r,  Rfoot_p, Rfoot_y, Rfoot_l;
+	float UHip_r,   UHip_p,  UHip_y, UHip_l;
+	float Lshoulder_r, Lshoulder_p, Lshoulder_y,Lshoulder_l;
+	float Rshoulder_r, Rshoulder_p, Rshoulder_y,Rshoulder_l;
+	float Lhand_r,  Lhand_p, Lhand_y,Lhand_l;
+	float Rhand_r,  Rhand_p, Rhand_y,Rhand_l;
+    float Head_r,   Head_p,  Head_y,Head_l;
+	float Chest_r,  Chest_p, Chest_y,Chest_l;
+	float UChest_r, UChest_p,UChest_y,UChest_l;
+	float Lfoote_r, Lfoote_p,Lfoote_y,Lfoote_l;
+	float Rfoote_r, Rfoote_p,Rfoote_y,Rfoote_l;
 
 	int i=0; 
 	for(i=0; i < data->nSkeletons; i++)
