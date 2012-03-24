@@ -306,7 +306,7 @@ Tf_LeftShin_to_LeftFoot = T4;
 
 %% Left Foot to Left Foot End
 
-T4 = getT(DD(127:134));
+T4 = getT(DD(127:133));
 
 
 %% --------------------------------
@@ -342,7 +342,7 @@ Tf_RightShin_to_RightFoot = T4;
 
 %% Right Foot to Right Foot End
 
-T4 = getT(DD(135:141));
+T4 = getT(DD(134:140));
 
 
 %% --------------------------------
