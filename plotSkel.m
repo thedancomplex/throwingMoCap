@@ -2,7 +2,7 @@ close all
 clear all
 
 %% Global Data
-[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal.pts');
+[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal_UH.pts');
 s = size(d);
 
 %% find and print on global frame
@@ -81,7 +81,7 @@ grid on
 shg
 
 %% Local Data
-[H,D]=hdrload('moCapCapture/SampleClient/rpyLocal.pts');
+[H,D]=hdrload('moCapCapture/SampleClient/rpyLocal_UH.pts');
 S = size(D);
 
 %% Find and print Local Frame with ref to the first point of UH (Upper Hip)
@@ -142,60 +142,23 @@ Tf_UpperHip_to_Chest = T2;
 
 
 %% Chest to Upper Chest
-UC_L = DD(120:126);
-x3  =   UC_L(4);
-y3  =   UC_L(5);
-z3  =   UC_L(6);
-
-R3  =   deg2rad(UC_L(1));
-P3  =   deg2rad(UC_L(2));
-Y3  =   deg2rad(UC_L(3));
-
-r3  = [ R3 0 0 ; 0 P3 0 ; 0 0 Y3 ];
-t3  = [ x3 ; y3 ; z3 ];
-
-T3  = [r3, t3; 0 0 0 1];
-
+T4 = getT(DD(120:126));
 
 %% --------------------------------
-Tf_Chest_to_UpperChest = T3;
+Tf_Chest_to_UpperChest = T4;
 %% --------------------------------
 
 
 
 %% Upper Chest to LeftShoulder
-LS_L = DD(78:84);
-x4  =   LS_L(4);
-y4  =   LS_L(5);
-z4  =   LS_L(6);
-
-R4  =   deg2rad(LS_L(1));
-P4  =   deg2rad(LS_L(2));
-Y4  =   deg2rad(LS_L(3));
-
-r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
-t4  = [ x4 ; y4 ; z4 ];
-
-T4  = [r4, t4; 0 0 0 1];
+T4 = getT(DD(78:84));
 
 %% --------------------------------
 Tf_UpperChest_to_LeftShoulder = T4;
 %% --------------------------------
 
 %% LeftShoulder to Left Upper Arm
-LUA_L = DD(1:7);
-x4  =   LUA_L(4);
-y4  =   LUA_L(5);
-z4  =   LUA_L(6);
-
-R4  =   deg2rad(LUA_L(1));
-P4  =   deg2rad(LUA_L(2));
-Y4  =   deg2rad(LUA_L(3));
-
-r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
-t4  = [ x4 ; y4 ; z4 ];
-
-T4  = [r4, t4; 0 0 0 1];
+T4 = getT(DD(1:7));
 
 %% --------------------------------
 Tf_LeftShoulder_to_LeftUpperArm = T4;
@@ -203,19 +166,7 @@ Tf_LeftShoulder_to_LeftUpperArm = T4;
 
 
 %% Left Upper Arm to Left Elbow
-LE_L = DD(8:14);
-x4  =   LE_L(4);
-y4  =   LE_L(5);
-z4  =   LE_L(6);
-
-R4  =   deg2rad(LE_L(1));
-P4  =   deg2rad(LE_L(2));
-Y4  =   deg2rad(LE_L(3));
-
-r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
-t4  = [ x4 ; y4 ; z4 ];
-
-T4  = [r4, t4; 0 0 0 1];
+T4 = getT(DD(8:14));
 
 %% --------------------------------
 Tf_LeftUpperArm_to_LeftElbow = T4;
@@ -223,19 +174,7 @@ Tf_LeftUpperArm_to_LeftElbow = T4;
 
 
 %% Left Elbow to Left Hand
-LE_L = DD(92:98);
-x4  =   LE_L(4);
-y4  =   LE_L(5);
-z4  =   LE_L(6);
-
-R4  =   deg2rad(LE_L(1));
-P4  =   deg2rad(LE_L(2));
-Y4  =   deg2rad(LE_L(3));
-
-r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
-t4  = [ x4 ; y4 ; z4 ];
-
-T4  = [r4, t4; 0 0 0 1];
+T4 = getT(DD(92:98));
 
 %% --------------------------------
 Tf_LeftElbow_to_LeftHand = T4;
@@ -348,6 +287,39 @@ T4 = getT(DD(134:140));
 %% --------------------------------
 Tf_RightFoot_to_RightFootEnd = T4;
 %% --------------------------------
+
+
+%% Upper Chest to Neck
+T4 = getT(DD(141:147));
+
+%% --------------------------------
+Tf_RightUpperChest_to_Neck = T4;
+%% --------------------------------
+
+%% Neck to Head
+T4 = getT(DD(106:112));
+
+%% --------------------------------
+Tf_Neck_to_Head = T4;
+%% --------------------------------
+
+%% Upper Hip to Head
+L4 = [ UH(1), UH(2), UH(3) ];
+T = Tf_UpperHip_to_Chest * Tf_Orig_to_UpperHip;
+L4 = [[T(1,4), T(2,4), T(3,4)]; L4 ];
+T = Tf_Chest_to_UpperChest * T;
+L4 = [[T(1,4), T(2,4), T(3,4)]; L4 ];
+T = Tf_RightUpperChest_to_Neck * T;
+L4 = [[T(1,4), T(2,4), T(3,4)]; L4 ];
+T = Tf_Neck_to_Head * T;
+L4 = [[T(1,4), T(2,4), T(3,4)]; L4 ];
+
+plot3(L4(:,1), L4(:,2), L4(:,3),'g','LineWidth',3);
+
+
+
+
+
 
 %% Upper Hip to Right Foot
 L3 = [ UH(1), UH(2), UH(3) ];

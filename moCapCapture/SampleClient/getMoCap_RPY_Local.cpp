@@ -768,7 +768,22 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					Rhand_Z = rbData.z;
 				} 
 				
-				//if(  rbData.ID == 65541 ) { char Name[] = "Head";      Head_x = rbData.x, Head_y = rbData.y, Head_z = rbData.z;}        //Head_rbData.x_2 = -rbData.x3, Head_pitch_2 = -pitch3, Head_roll_2 = -roll3;               Head_rm[0][0] = 1.0 - 2.0*rbData.qy*rbData.qy - 2.0*rbData.qz*rbData.qz; Head_rm[0][1] = 2.0*rbData.qx*rbData.qy - 2.0*rbData.qz*rbData.qw; Head_rm[0][2] = 2.0*rbData.qx*rbData.qz + 2.0*rbData.qy*rbData.qw; Head_rm[1][0] = 2.0*rbData.qx*rbData.qy + 2.0*rbData.qz*rbData.qw; Head_rm[1][1] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qz*rbData.qz; Head_rm[1][2] = 2.0*rbData.qy*rbData.qz - 2.0*rbData.qx*rbData.qw; Head_rm[2][0] = 2.0*rbData.qx*rbData.qz - 2.0*rbData.qy*rbData.qw; Head_rm[2][1] = 2.0*rbData.qy*rbData.qz + 2.0*rbData.qx*rbData.qw; Head_rm[2][2] = 1.0 - 2.0*rbData.qx*rbData.qx - 2.0*rbData.qy*rbData.qy;}
+				if(  rbData.ID == 65541 ) // Head 
+				{
+					Quat q;
+					q.x = rbData.qx;
+					q.y = rbData.qy;
+					q.z = rbData.qz;
+					q.w = rbData.qw;
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					Head_r = deg.x;
+					Head_p = deg.y;
+					Head_y = deg.z;
+					Head_l = sqrt(rbData.x*rbData.x + rbData.y*rbData.y + rbData.z*rbData.z);
+					Head_X = rbData.x;
+					Head_Y = rbData.y;
+					Head_Z = rbData.z;
+				}
 				if(  rbData.ID == 65538 ) // Chest (WST)
 				{
 					Quat q;
@@ -857,12 +872,12 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Rshoulder_r, Rshoulder_p,  Rshoulder_y,Rshoulder_X, Rshoulder_Y,  Rshoulder_Z, Rshoulder_l );	//85:91
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Lhand_r,  Lhand_p,  Lhand_y,Lhand_X,  Lhand_Y,  Lhand_Z, Lhand_l );		//92:98
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Rhand_r,  Rhand_p,  Rhand_y,Rhand_X,  Rhand_Y,  Rhand_Z, Rhand_l );		//99:105
-				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Head_r,  Head_p,  Head_y,Head_X,  Head_Y,  Head_Z, Head_l );			//112
+				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Head_r,  Head_p,  Head_y,Head_X,  Head_Y,  Head_Z, Head_l );			//106:112
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Chest_r, Chest_p, Chest_y,Chest_X, Chest_Y, Chest_Z, Chest_l );		//113:119
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Uchest_r, Uchest_p, Uchest_y,Uchest_X, Uchest_Y, Uchest_Z, Uchest_l );	//120:126
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Lfoote_r, Lfoote_p, Lfoote_y,Lfoote_X, Lfoote_Y, Lfoote_Z, Lfoote_l );	//127:133
 				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Rfoote_r, Rfoote_p, Rfoote_y,Rfoote_X, Rfoote_Y, Rfoote_Z, Rfoote_l );	//134:140
-				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Neck_r, Neck_p, Neck_y,Neck_X, Neck_Y, Neck_Z, Neck_l );	//142:148
+				fprintf(fp,"%4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t %4.9f\t   ",Neck_r, Neck_p, Neck_y,Neck_X, Neck_Y, Neck_Z, Neck_l );	//141:147
 				fprintf(fp, "%d",    data->iFrame);
 				fprintf(fp, "\n");
 				fflush(fp);
