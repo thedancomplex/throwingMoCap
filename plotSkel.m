@@ -127,17 +127,19 @@ T0 = [  0 0 0 0 ;
         0 0 0 0 ;
         0 0 0 0 ;
         0 0 0 1];
-
-Tf_Orig_to_Upper_Hip = T1*T0;    
-
+%% --------------------------------
+Tf_Orig_to_UpperHip = T1*T0; 
+%% --------------------------------
 Tf = T2*T1*T0;
-Tf_Upper_Hip_to_Chest = Tf;
+
+%% --------------------------------
+Tf_UpperHip_to_Chest = T2;
+%% --------------------------------
 
 
-Lf = [  Tf(1,4),    Tf(2,4),    Tf(3,4);
-        x1,         y1,         z1];
+
     
-plot3(Lf(:,1), Lf(:,2), Lf(:,3),'LineWidth',6);
+
 
 %% Chest to Upper Chest
 UC_L = DD(120:126);
@@ -154,33 +156,93 @@ t3  = [ x3 ; y3 ; z3 ];
 
 T3  = [r3, t3; 0 0 0 1];
 
-Tf = T3*Tf;
-Tf_Chest_to_UpperChest = Tf;
-Lf = [[Tf(1,4),    Tf(2,4),    Tf(3,4)];Lf];
 
-plot3(Lf(:,1), Lf(:,2), Lf(:,3),'g','LineWidth',3);
+%% --------------------------------
+Tf_Chest_to_UpperChest = T3;
+%% --------------------------------
 
-%% Upper Chest to Neck
-Nk_L = DD(78:84);
-x4  =   Nk_L(4);
-y4  =   Nk_L(5);
-z4  =   Nk_L(6);
 
-R4  =   deg2rad(Nk_L(1));
-P4  =   deg2rad(Nk_L(2));
-Y4  =   deg2rad(Nk_L(3));
+
+%% Upper Chest to LeftShoulder
+LS_L = DD(78:84);
+x4  =   LS_L(4);
+y4  =   LS_L(5);
+z4  =   LS_L(6);
+
+R4  =   deg2rad(LS_L(1));
+P4  =   deg2rad(LS_L(2));
+Y4  =   deg2rad(LS_L(3));
 
 r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
 t4  = [ x4 ; y4 ; z4 ];
 
 T4  = [r4, t4; 0 0 0 1];
 
-Tf_Nk = T4*Tf_UpperChest;
+%% --------------------------------
+Tf_UpperChest_to_LeftShoulder = T4;
+%% --------------------------------
 
-Lf_Nk = [[Tf_Nk(1,4),    Tf_Nk(2,4),    Tf_Nk(3,4)];Lf];
-plot3(Lf_Nk(:,1), Lf_Nk(:,2), Lf_Nk(:,3),'r','LineWidth',3);
+%% LeftShoulder to Left Upper Arm
+LUA_L = DD(1:7);
+x4  =   LUA_L(4);
+y4  =   LUA_L(5);
+z4  =   LUA_L(6);
+
+R4  =   deg2rad(LUA_L(1));
+P4  =   deg2rad(LUA_L(2));
+Y4  =   deg2rad(LUA_L(3));
+
+r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
+t4  = [ x4 ; y4 ; z4 ];
+
+T4  = [r4, t4; 0 0 0 1];
+
+%% --------------------------------
+Tf_LeftShoulder_to_LeftUpperArm = T4;
+%% --------------------------------
 
 
+%% Left Upper Arm to Left Elbow
+LE_L = DD(8:14);
+x4  =   LE_L(4);
+y4  =   LE_L(5);
+z4  =   LE_L(6);
 
+R4  =   deg2rad(LE_L(1));
+P4  =   deg2rad(LE_L(2));
+Y4  =   deg2rad(LE_L(3));
+
+r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
+t4  = [ x4 ; y4 ; z4 ];
+
+T4  = [r4, t4; 0 0 0 1];
+
+%% --------------------------------
+Tf_LeftUpperArm_to_LeftElbow = T4;
+%% --------------------------------
+
+%% Upper Hip to Left Hand
+L = [ UH(1), UH(2), UH(3) ];
+T = Tf_UpperHip_to_Chest * Tf_Orig_to_UpperHip;
+L = [[T(1,4), T(2,4), T(3,4)]; L ];
+T = Tf_Chest_to_UpperChest * T;
+L = [[T(1,4), T(2,4), T(3,4)]; L ];
+T = Tf_UpperChest_to_LeftShoulder * T;
+L = [[T(1,4), T(2,4), T(3,4)]; L ];
+T = Tf_LeftShoulder_to_LeftUpperArm * T;
+L = [[T(1,4), T(2,4), T(3,4)]; L ];
+T = Tf_LeftUpperArm_to_LeftElbow * T;
+L = [[T(1,4), T(2,4), T(3,4)]; L ];
+
+
+%% Upper Hip to Left Hand
+% Tf_Orig_to_UpperHip
+% Tf_UpperHip_to_Chest
+% Tf_Chest_to_UpperChest
+% Tf_UpperChest_to_LeftShoulder
+% Tf_LeftShoulder_to_LeftUpperArm
+% Tf_LeftUpperArm_to_LeftElbow
+
+plot3(L(:,1), L(:,2), L(:,3),'r','LineWidth',3);
 
 
