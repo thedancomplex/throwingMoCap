@@ -221,6 +221,188 @@ T4  = [r4, t4; 0 0 0 1];
 Tf_LeftUpperArm_to_LeftElbow = T4;
 %% --------------------------------
 
+
+%% Left Elbow to Left Hand
+LE_L = DD(92:98);
+x4  =   LE_L(4);
+y4  =   LE_L(5);
+z4  =   LE_L(6);
+
+R4  =   deg2rad(LE_L(1));
+P4  =   deg2rad(LE_L(2));
+Y4  =   deg2rad(LE_L(3));
+
+r4  = [ R4 0 0 ; 0 P4 0 ; 0 0 Y4 ];
+t4  = [ x4 ; y4 ; z4 ];
+
+T4  = [r4, t4; 0 0 0 1];
+
+%% --------------------------------
+Tf_LeftElbow_to_LeftHand = T4;
+%% --------------------------------
+
+%% Upper Chest to Right Shoulder
+
+T4 = getT(DD(85:91));
+
+%% --------------------------------
+Tf_UpperChest_to_Right_Shoulder = T4;
+%% --------------------------------
+
+
+
+%% Right Shoulder to Right Upper Arm
+
+T4 = getT(DD(15:21));
+
+%% --------------------------------
+Tf_Right_Shoulder_to_Right_Upper_Arm = T4;
+%% --------------------------------
+
+
+
+%% Right Upper Arm to Right Elbow
+
+T4 = getT(DD(22:28));
+
+%% --------------------------------
+Tf_Right_Upper_Arm_to_Right_Elbow = T4;
+%% --------------------------------
+%% Right Elbow to Right Hand
+
+T4 = getT(DD(99:105));
+
+%% --------------------------------
+Tf_Right_Elbow_to_Right_Hand = T4;
+%% --------------------------------
+
+%% Origin to Left Thigh
+
+T4 = getT(DD(29:35));
+
+
+%% --------------------------------
+Tf_Orig_to_LeftThigh = T4;
+%% --------------------------------
+
+
+%% Left Thigh to Left Shin
+
+T4 = getT(DD(43:49));
+
+
+%% --------------------------------
+Tf_LeftThigh_to_LeftShin = T4;
+%% --------------------------------
+
+%% Left Shin to Left Foot
+
+T4 = getT(DD(57:63));
+
+
+%% --------------------------------
+Tf_LeftShin_to_LeftFoot = T4;
+%% --------------------------------
+
+%% Left Foot to Left Foot End
+
+T4 = getT(DD(127:134));
+
+
+%% --------------------------------
+Tf_LeftFoot_to_LeftFootEnd = T4;
+%% --------------------------------
+
+%% Origin to Right Thigh
+
+T4 = getT(DD(36:42));
+
+
+%% --------------------------------
+Tf_Orig_to_RightThigh = T4;
+%% --------------------------------
+
+%% Right Thigh to Right Shin
+
+T4 = getT(DD(50:56));
+
+
+%% --------------------------------
+Tf_RightThigh_to_RightShin = T4;
+%% --------------------------------
+
+%% Right Shin to Right Foot
+
+T4 = getT(DD(64:70));
+
+
+%% --------------------------------
+Tf_RightShin_to_RightFoot = T4;
+%% --------------------------------
+
+%% Right Foot to Right Foot End
+
+T4 = getT(DD(135:141));
+
+
+%% --------------------------------
+Tf_RightFoot_to_RightFootEnd = T4;
+%% --------------------------------
+
+%% Upper Hip to Right Foot
+L3 = [ UH(1), UH(2), UH(3) ];
+T = Tf_Orig_to_RightThigh * Tf_Orig_to_UpperHip;
+L3 = [[T(1,4), T(2,4), T(3,4)]; L3 ];
+T = Tf_RightThigh_to_RightShin * T;
+L3 = [[T(1,4), T(2,4), T(3,4)]; L3 ];
+T = Tf_RightShin_to_RightFoot * T;
+L3 = [[T(1,4), T(2,4), T(3,4)]; L3 ];
+T = Tf_RightFoot_to_RightFootEnd * T;
+L3 = [[T(1,4), T(2,4), T(3,4)]; L3 ];
+
+plot3(L3(:,1), L3(:,2), L3(:,3),'m','LineWidth',3);
+
+
+
+%% Upper Hip to Left Foot
+L2 = [ UH(1), UH(2), UH(3) ];
+T = Tf_Orig_to_LeftThigh * Tf_Orig_to_UpperHip;
+L2 = [[T(1,4), T(2,4), T(3,4)]; L2 ];
+T = Tf_LeftThigh_to_LeftShin * T;
+L2 = [[T(1,4), T(2,4), T(3,4)]; L2 ];
+T = Tf_LeftShin_to_LeftFoot * T;
+L2 = [[T(1,4), T(2,4), T(3,4)]; L2 ];
+T = Tf_LeftFoot_to_LeftFootEnd * T;
+L2 = [[T(1,4), T(2,4), T(3,4)]; L2 ];
+plot3(L2(:,1), L2(:,2), L2(:,3),'c','LineWidth',3);
+
+% Tf_Orig_to_LeftThigh
+
+
+
+%% Upper Hip to Right Hand
+L1 = [ UH(1), UH(2), UH(3) ];
+T = Tf_UpperHip_to_Chest * Tf_Orig_to_UpperHip;
+L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
+T = Tf_Chest_to_UpperChest * T;
+L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
+T = Tf_UpperChest_to_Right_Shoulder * T;
+L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
+T = Tf_Right_Shoulder_to_Right_Upper_Arm * T;
+L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
+T = Tf_Right_Upper_Arm_to_Right_Elbow * T;
+L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
+T = Tf_Right_Elbow_to_Right_Hand * T;
+L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
+
+%% Upper Hip to Right Hand
+% Tf_Orig_to_UpperHip
+% Tf_UpperHip_to_Chest
+% Tf_Chest_to_UpperChest
+% Tf_UpperChest_to_Right_Shoulder
+plot3(L1(:,1), L1(:,2), L1(:,3),'g','LineWidth',3);
+
+
 %% Upper Hip to Left Hand
 L = [ UH(1), UH(2), UH(3) ];
 T = Tf_UpperHip_to_Chest * Tf_Orig_to_UpperHip;
@@ -233,6 +415,8 @@ T = Tf_LeftShoulder_to_LeftUpperArm * T;
 L = [[T(1,4), T(2,4), T(3,4)]; L ];
 T = Tf_LeftUpperArm_to_LeftElbow * T;
 L = [[T(1,4), T(2,4), T(3,4)]; L ];
+T = Tf_LeftElbow_to_LeftHand*T;
+L = [[T(1,4), T(2,4), T(3,4)]; L ];
 
 
 %% Upper Hip to Left Hand
@@ -242,6 +426,7 @@ L = [[T(1,4), T(2,4), T(3,4)]; L ];
 % Tf_UpperChest_to_LeftShoulder
 % Tf_LeftShoulder_to_LeftUpperArm
 % Tf_LeftUpperArm_to_LeftElbow
+% Tf_LeftElbow_to_LeftHand
 
 plot3(L(:,1), L(:,2), L(:,3),'r','LineWidth',3);
 
