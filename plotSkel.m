@@ -2,11 +2,13 @@ close all
 clear all
 
 %% Global Data
-[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal_UH.pts');
+%[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal_UH.pts');
+[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal.pts');
 s = size(d);
 dd = d(s(1),:);
 %% Local Data
-[H,D]=hdrload('moCapCapture/SampleClient/rpyLocal_UH.pts');
+%[H,D]=hdrload('moCapCapture/SampleClient/rpyLocal_UH.pts');
+[H,D]=hdrload('moCapCapture/SampleClient/rpyLocal.pts');
 S = size(D);
 DD = D(S(1),:);
 figure
@@ -39,7 +41,7 @@ end
 
 movie(mF, 1, 100);
 disp('play movie')
-movie2avi(mF, 'test.avi', 'FPS', 100)
+%movie2avi(mF, 'test.avi', 'FPS', 100)
 %movie(F)
 
 

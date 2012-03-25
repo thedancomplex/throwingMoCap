@@ -71,7 +71,7 @@ tmp =   [UH(1),     UH(2),      UH(3);
 plot3(pr(:,1), pr(:,2), pr(:,3),'o')
 hold on
 plot3(Nk(1), Nk(2), Nk(3),'r+');
-axis([-2000 2000 -100 2000 -2000 2000])
+axis([-2000 2000 -100 2000 -1000 1000])
 xlabel('X axis (mm)');
 ylabel('Y axis (mm)');
 zlabel('Z axis (mm)');

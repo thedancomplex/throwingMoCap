@@ -437,7 +437,7 @@ void _WriteHeader(FILE* fp, sDataDescriptions* pBodyDefs)
 	fprintf(fp,"UChestR UChestP UChestY X Y Z UChestL ");
 	fprintf(fp,"LfooteR LfooteP LfooteY X Y Z LfooteL ");
 	fprintf(fp,"RfooteR RfooteP RfooteY X Y Z RfooteL ");
-	fprintf(fp,"NeckR NeckP NeckY X Y Z NeckL");
+	fprintf(fp,"NeckR NeckP NeckY X Y Z NeckL ");
 	fprintf(fp,"Frame ");
 	fprintf(fp,"\n");
 
@@ -521,7 +521,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZYXr);	// anything the upper yaw dows 
 					Lelbow_r = deg.x;
 					Lelbow_p = deg.y;
 					Lelbow_y = deg.z;
@@ -537,7 +538,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Rshoulder_r = deg.x;
 					Rshoulder_p = deg.y;
 					Rshoulder_y = deg.z;
@@ -553,7 +555,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZYXr);	// anything the upper yaw dows 
 					Relbow_r = deg.x;
 					Relbow_p = deg.y;
 					Relbow_y = deg.z;
@@ -569,7 +572,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZXYr);	// anything the upper yaw dows 
 					Lthigh_r = deg.x;
 					Lthigh_p = deg.y;
 					Lthigh_y = deg.z;
@@ -586,7 +590,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZXYr);	// anything the upper yaw dows 
 					Rthigh_r = deg.x;
 					Rthigh_p = deg.y;
 					Rthigh_y = deg.z;
@@ -602,7 +607,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Lshin_r = deg.x;
 					Lshin_p = deg.y;
 					Lshin_y = deg.z;
@@ -618,7 +624,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Rshin_r = deg.x;
 					Rshin_p = deg.y;
 					Rshin_y = deg.z;
@@ -635,7 +642,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Lfoot_r = deg.x;
 					Lfoot_p = deg.y;
 					Lfoot_y = deg.z;
@@ -651,7 +659,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Rfoot_r = deg.x;
 					Rfoot_p = deg.y;
 					Rfoot_y = deg.z;
@@ -668,7 +677,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdXYZr);	// anything the upper yaw dows 
 					UHip_r = deg.x;
 					UHip_p = deg.y;
 					UHip_y = deg.z;
@@ -708,7 +718,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.z = rbData.qz;
 					q.w = rbData.qw;
 					//EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Lshoulder_r = deg.x;
 					Lshoulder_p = deg.y;
 					Lshoulder_y = deg.z;
@@ -741,7 +751,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.z = rbData.qz;
 					q.w = rbData.qw;
 					//EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZXYr);	// anything the upper yaw dows 
 					Lhand_r = deg.x;
 					Lhand_p = deg.y;
 					Lhand_y = deg.z;
@@ -758,7 +768,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.z = rbData.qz;
 					q.w = rbData.qw;
 					//EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZXYr);	// anything the upper yaw dows 
 					Rhand_r = deg.x;
 					Rhand_p = deg.y;
 					Rhand_y = deg.z;
@@ -775,7 +785,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZYXr);	// anything the upper yaw dows 
 					Head_r = deg.x;
 					Head_p = deg.y;
 					Head_y = deg.z;
@@ -791,7 +802,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdZXYr);	// anything the upper yaw dows 
 					Chest_r = deg.x;
 					Chest_p = deg.y;
 					Chest_y = deg.z;
@@ -809,6 +821,7 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
 					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
 					Uchest_r = deg.x;
 					Uchest_p = deg.y;
@@ -826,7 +839,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Lfoote_r = deg.x;
 					Lfoote_p = deg.y;
 					Lfoote_y = deg.z;
@@ -843,7 +857,8 @@ void _WriteFrame(FILE* fp, sFrameOfMocapData* data)
 					q.y = rbData.qy;
 					q.z = rbData.qz;
 					q.w = rbData.qw;
-					EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					// EulerAngles deg = Eul_FromQuat(q, EulOrdYZXr);	// anything the upper yaw dows 
+					EulerAngles deg = Eul_FromQuat(q, EulOrdYXZr);	// anything the upper yaw dows 
 					Rfoote_r = deg.x;
 					Rfoote_p = deg.y;
 					Rfoote_y = deg.z;
