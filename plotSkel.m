@@ -1,5 +1,7 @@
 close all
 clear all
+%% Add paths
+addpath('recordAces');
 
 %% Global Data
 %[h,d]=hdrload('moCapCapture/SampleClient/xyzGlobal_UH.pts');
@@ -16,10 +18,14 @@ figure
 AZ = [];
 EL = [];
 F = {};
+mName   =   {};
+mDeg    =   [];
 for( i = 1:s(1) )
     DD = D(i,:);
     dd = d(i,:);
-    getMoCapPlot(dd,DD);
+    [mName, mDegT] = getMoCapPlot(dd,DD);
+    mDeg(i,:) = mDegT;
+    
     if (i == 1)
         input('Set Desired View the press ENTER');
         [AZ,EL] = VIEW();
@@ -35,10 +41,16 @@ for( i = 1:s(1) )
     end
 end
 
+
+%% record to aces
+recordAces(mName, mDeg, 'test1');
+
+
+
+%% play movie
 for ( i = 1: s(1) )
     mF(i) = F{i};
 end
-
 movie(mF, 1, 100);
 disp('play movie')
 %movie2avi(mF, 'test.avi', 'FPS', 100)

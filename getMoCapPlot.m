@@ -1,7 +1,17 @@
 %% function to create a plot
-function [ ] = getMoCapPlot( dd, DD )
-% dd = global fram
-% DD = local frame
+function [ mName, mDeg ] = getMoCapPlot( dd, DD )
+
+%function [ mName, mDeg ] = getMoCapPlot( dd, DD )
+% Send;
+%   dd = global fram
+%   DD = local frame
+%
+% Return:
+%   mName   =    Name of the joint in aces format
+%   mDeg    =    the value in rad that the joint will be set to
+
+
+
 
 %% find and print on global frame
 
@@ -38,7 +48,7 @@ tmp =   [SL(1), SL(2),  SL(3);
         EL(1),  EL(2),  EL(3);
         HL(1),  HL(2),  HL(3)];
 
-plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'r');
+plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'g');
 hold on
 
 tmp =   [SL(1), SL(2),  SL(3);
@@ -51,14 +61,14 @@ tmp =   [HiL(1),    HiL(2),     HiL(3);
         KL(1),      KL(2),      KL(3);
         FL(1),      FL(2),      FL(3); 
         FLe(1),     FLe(2),     FLe(3)];
-        plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'k');
+        plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'g');
 
 tmp =   [HiL(1), HiL(2), HiL(3);
         HiR(1),     HiR(2),     HiR(3);
         KR(1),      KR(2),      KR(3);
         FR(1),      FR(2),      FR(3);
         FRe(1),     FRe(2),     FRe(3)];
-        plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'c');   
+        plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'g');   
  
 tmp =   [UH(1),     UH(2),      UH(3);
         C(1),       C(2),       C(3);
@@ -66,11 +76,11 @@ tmp =   [UH(1),     UH(2),      UH(3);
         USL(1),     USL(2),     USL(3);
         Nk(1),      Nk(2),      Nk(3);
         H(1),       H(2),       H(3)];
-        plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'm'); 
+        plot3(tmp(:,1), tmp(:,2), tmp(:,3), 'g'); 
 
 plot3(pr(:,1), pr(:,2), pr(:,3),'o')
 hold on
-plot3(Nk(1), Nk(2), Nk(3),'r+');
+plot3(Nk(1), Nk(2), Nk(3),'g+');
 axis([-2000 2000 -100 2000 -1000 1000])
 xlabel('X axis (mm)');
 ylabel('Y axis (mm)');
@@ -88,14 +98,14 @@ Ch_L    =   DD(113:119);      % Chest
 
 %% Plot Upper hip to Chest
 L1      =   UH_L(7);
-R1      =   deg2rad(UH_L(1));
-P1      =   deg2rad(UH_L(2));
-Y1      =   deg2rad(UH_L(3));
+R1      =   (UH_L(1));
+P1      =   (UH_L(2));
+Y1      =   (UH_L(3));
 
 L2      =   Ch_L(7);
-R2      =   deg2rad(Ch_L(1));
-P2      =   deg2rad(Ch_L(2));
-Y2      =   deg2rad(Ch_L(3));
+R2      =   (Ch_L(1));
+P2      =   (Ch_L(2));
+Y2      =   (Ch_L(3));
 
 r1 = [ R1 0 0 ; 0 P1 0 ; 0 0 Y1];
 
@@ -123,13 +133,18 @@ T0 = [  0 0 0 0 ;
         0 0 0 0 ;
         0 0 0 0 ;
         0 0 0 1];
+    
+jd = DD(71:77);
 %% --------------------------------
 Tf_Orig_to_UpperHip = T1*T0; 
+xyz_Orig_to_UpperHip = getD(jd,'xyz','y',1);
 %% --------------------------------
 Tf = T2*T1*T0;
 
+jd = DD(113:119);
 %% --------------------------------
 Tf_UpperHip_to_Chest = T2;
+xyz_UpperHip_to_Chest = getD(jd,'zxy','y',1);
 %% --------------------------------
 
 
@@ -138,10 +153,12 @@ Tf_UpperHip_to_Chest = T2;
 
 
 %% Chest to Upper Chest
-T4 = getT(DD(120:126));
+jd = DD(120:126);
+T4 = getT(jd);
 
 %% --------------------------------
 Tf_Chest_to_UpperChest = T4;
+xyz_Chest_to_UpperChest = getD(jd,'yzx','y',1);
 %% --------------------------------
 
 
@@ -310,7 +327,7 @@ L4 = [[T(1,4), T(2,4), T(3,4)]; L4 ];
 T = Tf_Neck_to_Head * T;
 L4 = [[T(1,4), T(2,4), T(3,4)]; L4 ];
 
-plot3(L4(:,1), L4(:,2), L4(:,3),'g','LineWidth',3);
+plot3(L4(:,1), L4(:,2), L4(:,3),'r','LineWidth',2);
 
 
 
@@ -328,7 +345,7 @@ L3 = [[T(1,4), T(2,4), T(3,4)]; L3 ];
 T = Tf_RightFoot_to_RightFootEnd * T;
 L3 = [[T(1,4), T(2,4), T(3,4)]; L3 ];
 
-plot3(L3(:,1), L3(:,2), L3(:,3),'m','LineWidth',3);
+plot3(L3(:,1), L3(:,2), L3(:,3),'r','LineWidth',3);
 
 
 
@@ -342,7 +359,7 @@ T = Tf_LeftShin_to_LeftFoot * T;
 L2 = [[T(1,4), T(2,4), T(3,4)]; L2 ];
 T = Tf_LeftFoot_to_LeftFootEnd * T;
 L2 = [[T(1,4), T(2,4), T(3,4)]; L2 ];
-plot3(L2(:,1), L2(:,2), L2(:,3),'c','LineWidth',3);
+plot3(L2(:,1), L2(:,2), L2(:,3),'r','LineWidth',3);
 
 % Tf_Orig_to_LeftThigh
 
@@ -368,7 +385,7 @@ L1 = [[T(1,4), T(2,4), T(3,4)]; L1 ];
 % Tf_UpperHip_to_Chest
 % Tf_Chest_to_UpperChest
 % Tf_UpperChest_to_Right_Shoulder
-plot3(L1(:,1), L1(:,2), L1(:,3),'g','LineWidth',3);
+plot3(L1(:,1), L1(:,2), L1(:,3),'r','LineWidth',3);
 
 
 %% Upper Hip to Left Hand
@@ -385,6 +402,7 @@ T = Tf_LeftUpperArm_to_LeftElbow * T;
 L = [[T(1,4), T(2,4), T(3,4)]; L ];
 T = Tf_LeftElbow_to_LeftHand*T;
 L = [[T(1,4), T(2,4), T(3,4)]; L ];
+plot3(L(:,1), L(:,2), L(:,3),'r','LineWidth',3);
 
 
 %% Upper Hip to Left Hand
@@ -396,7 +414,41 @@ L = [[T(1,4), T(2,4), T(3,4)]; L ];
 % Tf_LeftUpperArm_to_LeftElbow
 % Tf_LeftElbow_to_LeftHand
 
-plot3(L(:,1), L(:,2), L(:,3),'r','LineWidth',3);
+
+%% plot rot and length stuff
+
+%% Hip to Left Arm
+%L = [ UH(1), UH(2), UH(3) ];
+a = xyz_Orig_to_UpperHip;
+L = [a(1), a(2), a(3)];
+a = xyz_UpperHip_to_Chest;
+Lt = [ a' ; L];
+L  = [sum(Lt) ; L]; 
+a = xyz_Chest_to_UpperChest;
+Lt = [ a' ; L];
+L  = [sum(Lt) ; L]; 
+plot3(L(:,1), L(:,2), L(:,3),'b','LineWidth',4);
+
+%% Set values for the return
+
+%% set the names
+mName = {'RSP', 'RSR', 'RSY', 'LSP', 'LSR', 'LSY' };
+
+mDeg = [];
+for( i = 1:length(mName))
+    mDeg(i) = 0;
+end
+
+%% LSP
+t = Tf_LeftUpperArm_to_LeftElbow * Tf_LeftShoulder_to_LeftUpperArm;
+tr = t(1,1);
+tp = t(2,2);
+ty = t(3,3);
+%i = min(strcmp(mName,'LSP'));
+mDeg(4) = tr;
+%disp(num2str(t))
+
+
 
 
 end
